@@ -5,10 +5,11 @@ import { Index } from "../components/AddComment";
 import { CommentsBlock } from "../components/CommentsBlock";
 import {useParams} from "react-router-dom";
 import axios from "../axios";
+import {useDispatch, useSelector} from "react-redux";
+import {selectIsAuth} from "../redux/slices/auth";
 
 export const FullPost = () => {
 
-    const
 
     const [data,setData] = useState()
     const [isLoading,setIsLoading] = useState(true)
