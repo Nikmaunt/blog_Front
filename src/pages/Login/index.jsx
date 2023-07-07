@@ -26,7 +26,7 @@ export const Login = () => {
     const onSubmit = async (values) => {
      const data = await dispatch(fetchAuth(values));
      if(!data.payload){
-         alert('Unable to authorize')
+        return  alert('Unable to authorize')
      }
         if ('token' in data.payload) {
             window.localStorage.setItem('token', data.payload.token)
