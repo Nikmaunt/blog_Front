@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
@@ -8,10 +8,11 @@ import 'easymde/dist/easymde.min.css';
 import styles from './AddPost.module.scss';
 import {useSelector} from "react-redux";
 import {selectIsAuth} from "../../redux/slices/auth";
-import {Navigate, useNavigate} from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import axios from "../../axios";
 
 export const AddPost = () => {
+    const {id} = useParams()
     const isAuth = useSelector(selectIsAuth)
     const navigate = useNavigate()
     const inputFileRef = useRef(null)
@@ -32,6 +33,20 @@ export const AddPost = () => {
            alert(err)
        }
     };
+
+    useEffect(()=> {
+        if (id) {
+            axios.get(`posts/${id}`).then(({data})=> {
+                setTitle(data.title)
+                setText(data.text)
+                setImageUrl(data.imageUrl)
+                setTags(data.tags.join(','))
+
+            }).catch((err)=> {
+                alert(err)
+            })
+        }
+    },[])
 
     const onClickRemoveImage = () => {
         setImageUrl('')

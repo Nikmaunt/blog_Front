@@ -7,6 +7,7 @@ import {useParams} from "react-router-dom";
 import axios from "../axios";
 import {useDispatch, useSelector} from "react-redux";
 import {selectIsAuth} from "../redux/slices/auth";
+import ReactMarkdown from "react-markdown";
 
 export const FullPost = () => {
 
@@ -31,13 +32,12 @@ export const FullPost = () => {
         return <Post isLoading={isLoading}  isFullPost/>
     }
 
-
   return (
     <>
       <Post
         id={data.id}
         title={data.title}
-        imageUrl={data.imageUrl}
+        imageUrl={data.imageUrl?  `http://localhost:4444${data.imageUrl}`: ''}
         user={{
           avatarUrl: data.user.avatarUrl,
           fullName: data.user.fullName,
@@ -48,9 +48,7 @@ export const FullPost = () => {
         tags={data.tags}
         isFullPost
       >
-        <p>
-            {data.text}
-        </p>
+        <ReactMarkdown children={data.text}/>
       </Post>
       <CommentsBlock
         items={[
