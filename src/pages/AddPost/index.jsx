@@ -21,7 +21,7 @@ export const AddPost = () => {
     const [title, setTitle] = React.useState('');
     const [tags, setTags] = React.useState('');
     const [imageUrl, setImageUrl] = React.useState('');
-
+    const isEditing = Boolean(id)
     const handleChangeFile = async (event) => {
        try {
             const formData = new FormData()
@@ -65,9 +65,14 @@ export const AddPost = () => {
               tags,
               text
           }
-          const {data} = await axios.post('/posts',fields)
-          const id = data._id
-          navigate(`/posts/${id}`)
+
+          const {data} = isEditing
+              ? await axios.patch(`/posts/${id}`,fields)
+              : await axios.post('/posts',fields)
+
+          const _id = isEditing? id : data._id
+
+          navigate(`/posts/${_id}`)
       } catch (err) {
           alert(err)
       }
@@ -124,7 +129,7 @@ export const AddPost = () => {
             <SimpleMDE className={styles.editor} value={text} onChange={onChange} options={options}/>
             <div className={styles.buttons}>
                 <Button onClick={onSubmit} size="large" variant="contained">
-                    Publish
+                    {isEditing ? "Save" : " Publish"}
                 </Button>
                 <a href="/">
                     <Button size="large">Cancel</Button>
